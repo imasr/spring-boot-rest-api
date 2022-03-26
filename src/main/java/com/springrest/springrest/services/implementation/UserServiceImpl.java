@@ -2,10 +2,12 @@ package com.springrest.springrest.services.implementation;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.springrest.springrest.crud.UserRepository;
-import com.springrest.springrest.customexception.UserException;
 import com.springrest.springrest.io.entity.UserEntity;
 import com.springrest.springrest.services.UserService;
 import com.springrest.springrest.shared.Utils;
@@ -20,18 +22,21 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	Utils utils;
 	
+	@Autowired
+	BCryptPasswordEncoder bcryptPassword;
+	
 	@Override
 	public UserDto createUser(UserDto user) {
 		
 		if(userRepository.findByEmail(user.getEmail()) != null) 
-			throw new UserException("User already Exist");
+			throw new RuntimeException("User already Exist");
 		
 		UserEntity userEntity = new UserEntity();
 		BeanUtils.copyProperties(user, userEntity);
 		
 		String publicUserId=utils.createNewUserId();
 
-		userEntity.setEncryptedPassword("test");
+		userEntity.setEncryptedPassword(bcryptPassword.encode(user.getPassword()));
 		userEntity.setUserId(publicUserId);
 
 		UserEntity savedUser = userRepository.save(userEntity);
@@ -44,6 +49,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto getAllUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		return null;
 	};
