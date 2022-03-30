@@ -1,5 +1,7 @@
 package com.springrest.springrest.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,29 +20,33 @@ import com.springrest.springrest.ui.model.response.UserRest;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	
+
 	@Autowired
 	UserService userService;
 
 	@GetMapping
-	public UserRest getAllUser() {
-		UserRest returnValue = new UserRest();
+	public List<UserRest> getAllUser() {
 		
-		UserDto createdUserDetails= userService.getAllUsers();
+		List<UserDto> allUsers = userService.getAllUsers();
+		List<UserRest> data = new ArrayList<UserRest>();
 		
-		BeanUtils.copyProperties(createdUserDetails, returnValue);
-
-		return returnValue;
+		allUsers.forEach(item -> {
+			UserRest returnValue = new UserRest();
+			BeanUtils.copyProperties(item, returnValue);
+			System.out.println(item);
+			data.add(returnValue);
+		});
+		return data;
 	}
 
 	@PostMapping
-	public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails)  {
+	public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) {
 
 		UserRest returnValue = new UserRest();
 		UserDto userDto = new UserDto();
 
 		BeanUtils.copyProperties(userDetails, userDto);
-		UserDto createdUserDetails= userService.createUser(userDto);
+		UserDto createdUserDetails = userService.createUser(userDto);
 		BeanUtils.copyProperties(createdUserDetails, returnValue);
 
 		return returnValue;

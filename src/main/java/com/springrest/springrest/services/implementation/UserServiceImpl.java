@@ -1,5 +1,8 @@
 package com.springrest.springrest.services.implementation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,9 +51,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto getAllUsers() {
+	public List<UserDto> getAllUsers() {
 		// TODO Auto-generated method stub
-		return null;
+		List<UserDto> data= new ArrayList<UserDto>();
+	
+		Iterable<UserEntity> users= userRepository.findAll();
+		users.forEach(item->{
+			UserDto returnValue = new UserDto();
+			BeanUtils.copyProperties(item, returnValue);
+			data.add(returnValue);
+		});
+			
+		return data;
 	}
 
 	@Override

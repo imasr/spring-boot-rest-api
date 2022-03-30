@@ -17,10 +17,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	public WebSecurity(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.userService=userService;
 		this.bCryptPasswordEncoder=bCryptPasswordEncoder;
-		
 	}
-	
-	
+		
 	@Override()
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
@@ -32,5 +30,4 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	public void configure(AuthenticationManagerBuilder auth)throws Exception {
 		auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
 	}
-
 }
