@@ -10,8 +10,7 @@ public interface UserService extends UserDetailsService{
 	
 	UserDto createUser(UserDto userDto);
 	
+	List<UserDto> createUserInBulk(List<UserDto> userList);
+	
 	List<UserDto> getAllUsers();
-	
-	
-
 }

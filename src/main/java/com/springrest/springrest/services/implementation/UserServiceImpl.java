@@ -21,23 +21,23 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	Utils utils;
-	
+
 	@Autowired
 	BCryptPasswordEncoder bcryptPassword;
-	
+
 	@Override
 	public UserDto createUser(UserDto user) {
-		
-		if(userRepository.findByEmail(user.getEmail()) != null) 
+
+		if (userRepository.findByEmail(user.getEmail()) != null)
 			throw new RuntimeException("User already Exist");
-		
+
 		UserEntity userEntity = new UserEntity();
 		BeanUtils.copyProperties(user, userEntity);
-		
-		String publicUserId=utils.createNewUserId();
+
+		String publicUserId = utils.createNewUserId();
 
 		userEntity.setEncryptedPassword(bcryptPassword.encode(user.getPassword()));
 		userEntity.setUserId(publicUserId);
@@ -51,17 +51,42 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public List<UserDto> createUserInBulk(List<UserDto> userList) {
+		List<UserEntity> userEntityList = new ArrayList<UserEntity>();
+		
+		userList.forEach(user -> {
+			UserEntity userEntity = new UserEntity();
+			BeanUtils.copyProperties(user, userEntity);
+
+			String publicUserId = utils.createNewUserId();
+			userEntity.setEncryptedPassword(bcryptPassword.encode(user.getPassword()));
+			userEntity.setUserId(publicUserId);
+			userEntityList.add(userEntity);
+		});
+
+		Iterable<UserEntity> savedUserList = userRepository.saveAll(userEntityList);
+		List<UserDto> returnValue = new ArrayList<UserDto>();
+		savedUserList.forEach(savedUser -> {
+			UserDto userDto = new UserDto();
+			BeanUtils.copyProperties(savedUser, userDto);
+			returnValue.add(userDto);
+		});
+
+		return returnValue;
+	}
+
+	@Override
 	public List<UserDto> getAllUsers() {
 		// TODO Auto-generated method stub
-		List<UserDto> data= new ArrayList<UserDto>();
-	
-		Iterable<UserEntity> users= userRepository.findAll();
-		users.forEach(item->{
+		List<UserDto> data = new ArrayList<UserDto>();
+
+		Iterable<UserEntity> users = userRepository.findAll();
+		users.forEach(item -> {
 			UserDto returnValue = new UserDto();
 			BeanUtils.copyProperties(item, returnValue);
 			data.add(returnValue);
 		});
-			
+
 		return data;
 	}
 

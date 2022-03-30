@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springrest.springrest.io.entity.UserEntity;
 import com.springrest.springrest.services.UserService;
 import com.springrest.springrest.shared.dto.UserDto;
 import com.springrest.springrest.ui.model.request.UserDetailsRequestModel;
@@ -39,17 +40,38 @@ public class UserController {
 		return data;
 	}
 
+//	@PostMapping
+//	public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) {
+//
+//		UserRest returnValue = new UserRest();
+//		UserDto userDto = new UserDto();
+//
+//		BeanUtils.copyProperties(userDetails, userDto);
+//		UserDto createdUserDetails = userService.createUser(userDto);
+//		BeanUtils.copyProperties(createdUserDetails, returnValue);
+//
+//		return returnValue;
+//	}
+	
 	@PostMapping
-	public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) {
-
-		UserRest returnValue = new UserRest();
-		UserDto userDto = new UserDto();
-
-		BeanUtils.copyProperties(userDetails, userDto);
-		UserDto createdUserDetails = userService.createUser(userDto);
-		BeanUtils.copyProperties(createdUserDetails, returnValue);
-
-		return returnValue;
+	public Iterable<UserRest> createBulkUser(@RequestBody Iterable<UserDetailsRequestModel> userList) {
+		List<UserDto> userDtoList = new ArrayList<UserDto>();
+		userList.forEach(user -> {
+			UserDto userDto = new UserDto();
+			BeanUtils.copyProperties(user, userDto);
+			userDtoList.add(userDto);
+		});
+		
+		List<UserDto> storedUsers = userService.createUserInBulk(userDtoList);
+		
+		List<UserRest> returnItems= new ArrayList<UserRest>();
+		storedUsers.forEach(storedUser -> {
+			UserRest items= new UserRest();
+			BeanUtils.copyProperties(storedUser, items);
+			returnItems.add(items);
+		});
+	
+		return returnItems;
 	}
 
 	@PutMapping
