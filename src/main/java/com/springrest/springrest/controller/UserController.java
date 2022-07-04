@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springrest.springrest.io.entity.UserEntity;
 import com.springrest.springrest.services.UserService;
 import com.springrest.springrest.shared.dto.UserDto;
 import com.springrest.springrest.ui.model.request.UserDetailsRequestModel;
