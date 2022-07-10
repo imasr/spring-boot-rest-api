@@ -7,7 +7,8 @@ import com.springrest.springrest.io.entity.UserEntity;
 
 @Repository
 public interface UserRepository extends CrudRepository<UserEntity, Long> {
-	//custom create method
+	// custom create method
 	UserEntity findByEmail(String email);
+
 	UserEntity findByUserId(String userId);
 }
