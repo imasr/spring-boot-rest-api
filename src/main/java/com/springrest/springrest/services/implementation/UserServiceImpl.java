@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 	public UserDto createUser(UserDto user) {
 
 		if (userRepository.findByEmail(user.getEmail()) != null)
-			throw new RuntimeException("User already Exist");
+			throw new UsernameNotFoundException("User already Exist");
 
 		UserEntity userEntity = new UserEntity();
 		BeanUtils.copyProperties(user, userEntity);
@@ -92,8 +92,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto updateUser(UserDto userObject, String userId) {
 		UserEntity userEntity = userRepository.findByUserId(userId);
-		System.out.println(userEntity);
-
 		if (userEntity == null)
 			throw new UsernameNotFoundException("User does not Exist");
 
@@ -108,6 +106,26 @@ public class UserServiceImpl implements UserService {
 
 		return returnValue;
 	}
+
+	@Override
+	public void deleteUser(String userId) {
+		UserEntity userEntity = userRepository.findByUserId(userId);
+		if (userEntity == null)
+			throw new UsernameNotFoundException("User does not Exist");
+
+		userRepository.delete(userEntity);
+	};
+
+	@Override
+	public UserDto getUserById(String userId) throws UsernameNotFoundException {
+		UserEntity userEntity = userRepository.findByUserId(userId);
+		if (userEntity == null)
+			throw new UsernameNotFoundException("User does not Exist");
+
+		UserDto returnValue = new UserDto();
+		BeanUtils.copyProperties(userEntity, returnValue);
+		return returnValue;
+	};
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

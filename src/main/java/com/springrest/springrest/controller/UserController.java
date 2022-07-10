@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.StreamingHttpOutputMessage.Body;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,7 +49,32 @@ public class UserController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			Response response = new Response();
+			response.setMessage(e.getMessage());
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+
+	@GetMapping("/{userId}")
+	public ResponseEntity<Response> getUserById(@PathVariable("userId") String userId) {
+		try {
+			UserDto userDto = userService.getUserById(userId);
+
+			UserRest user = new UserRest();
+			BeanUtils.copyProperties(userDto, user);
+
+			Response response = new Response();
+			response.setData(user);
+			response.setMessage("success");
+			return ResponseEntity.status(HttpStatus.OK).body(response);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Response response = new Response();
+			response.setMessage(e.getMessage());
+			response.setStatus(HttpStatus.NOT_FOUND);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 	}
 
@@ -69,8 +95,8 @@ public class UserController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			Response response = new Response();
-			response.setMessage("User Already Exists");
-
+			response.setMessage(e.getMessage());
+			response.setStatus(HttpStatus.CONFLICT);
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 		}
 	}
@@ -98,7 +124,10 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			Response response = new Response();
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			response.setMessage(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 
@@ -109,8 +138,6 @@ public class UserController {
 
 			UserDto userDto = new UserDto();
 			BeanUtils.copyProperties(userDetails, userDto);
-
-			System.out.println(userDetails);
 
 			UserDto updatedUser = userService.updateUser(userDto, userId);
 
@@ -135,16 +162,19 @@ public class UserController {
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<Response> deleteUser(@PathVariable("userId") String userId) {
 		try {
+
+			userService.deleteUser(userId);
+
 			Response response = new Response();
 			response.setStatus(HttpStatus.OK);
-			response.setMessage(userId + " " + "user deleted");
+			response.setMessage(userId + " " + "User deleted Successfully");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			Response response = new Response();
 			response.setStatus(HttpStatus.NOT_FOUND);
-			response.setMessage("User id not Found");
+			response.setMessage(e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 
 		}

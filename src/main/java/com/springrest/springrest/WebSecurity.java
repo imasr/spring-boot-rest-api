@@ -13,24 +13,24 @@ import com.springrest.springrest.services.UserService;
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 	private final UserService userService;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	public WebSecurity(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-		this.userService=userService;
-		this.bCryptPasswordEncoder=bCryptPasswordEncoder;
+		this.userService = userService;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
-		
+
 	@Override()
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
-		.antMatchers(HttpMethod.GET,"/","/users").permitAll()
-		.antMatchers(HttpMethod.POST,"/users","/users/bulk").permitAll()
-		.antMatchers(HttpMethod.PUT,"/users/{id}").permitAll()
-		.antMatchers(HttpMethod.DELETE,"/users/{id}").permitAll()
-		.anyRequest().authenticated();
+				.antMatchers(HttpMethod.GET, "/", "/users", "/users/{id}").permitAll()
+				.antMatchers(HttpMethod.POST, "/users", "/users/bulk").permitAll()
+				.antMatchers(HttpMethod.PUT, "/users/{id}").permitAll()
+				.antMatchers(HttpMethod.DELETE, "/users/{id}").permitAll()
+				.anyRequest().authenticated();
 	}
-	
+
 	@Override()
-	public void configure(AuthenticationManagerBuilder auth)throws Exception {
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
 	}
 }
