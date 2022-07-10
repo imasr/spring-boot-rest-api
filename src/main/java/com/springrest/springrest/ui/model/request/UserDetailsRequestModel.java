@@ -4,7 +4,15 @@ public class UserDetailsRequestModel {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private String password;	
+	private String password;
+	private String userId;	
+	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	
 	public String getFirstName() {
 		return this.firstName;

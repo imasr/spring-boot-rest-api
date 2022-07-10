@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserDto> createUserInBulk(List<UserDto> userList) {
 		List<UserEntity> userEntityList = new ArrayList<UserEntity>();
-		
+
 		userList.forEach(user -> {
 			UserEntity userEntity = new UserEntity();
 			BeanUtils.copyProperties(user, userEntity);
@@ -87,6 +87,26 @@ public class UserServiceImpl implements UserService {
 		});
 
 		return data;
+	}
+
+	@Override
+	public UserDto updateUser(UserDto userObject, String userId) {
+		UserEntity userEntity = userRepository.findByUserId(userId);
+		System.out.println(userEntity);
+
+		if (userEntity == null)
+			throw new UsernameNotFoundException("User does not Exist");
+
+		userEntity.setFirstName(userObject.getFirstName());
+		userEntity.setLastName(userObject.getLastName());
+		userEntity.setEmail(userObject.getEmail());
+
+		UserEntity savedUser = userRepository.save(userEntity);
+
+		UserDto returnValue = new UserDto();
+		BeanUtils.copyProperties(savedUser, returnValue);
+
+		return returnValue;
 	}
 
 	@Override

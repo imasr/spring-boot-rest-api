@@ -55,11 +55,11 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<Response> createUser(@RequestBody UserDetailsRequestModel userDetails) {
 		try {
-			UserRest returnValue = new UserRest();
 			UserDto userDto = new UserDto();
 
 			BeanUtils.copyProperties(userDetails, userDto);
 			UserDto createdUserDetails = userService.createUser(userDto);
+			UserRest returnValue = new UserRest();
 			BeanUtils.copyProperties(createdUserDetails, returnValue);
 
 			Response response = new Response();
@@ -106,6 +106,17 @@ public class UserController {
 	public ResponseEntity<Response> updateUser(@RequestBody UserDetailsRequestModel userDetails,
 			@PathVariable("userId") String userId) {
 		try {
+
+			UserDto userDto = new UserDto();
+			BeanUtils.copyProperties(userDetails, userDto);
+
+			System.out.println(userDetails);
+
+			UserDto updatedUser = userService.updateUser(userDto, userId);
+
+			UserRest returnValue = new UserRest();
+			BeanUtils.copyProperties(updatedUser, returnValue);
+
 			Response response = new Response();
 			response.setStatus(HttpStatus.OK);
 			response.setMessage("User data updated Successfully");
@@ -116,7 +127,7 @@ public class UserController {
 			e.printStackTrace();
 			Response response = new Response();
 			response.setStatus(HttpStatus.NOT_FOUND);
-			response.setMessage("User id not Found");
+			response.setMessage(e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 	}
