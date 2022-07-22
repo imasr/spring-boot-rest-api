@@ -1,7 +1,5 @@
 package com.springrest.springrest.ui.model.response;
 
-import javax.persistence.Column;
-
 import com.springrest.springrest.io.entity.ContactEntity;
 
 public class UserRest {
