@@ -1,10 +1,23 @@
 package com.springrest.springrest.ui.model.response;
 
+import javax.persistence.Column;
+
+import com.springrest.springrest.io.entity.ContactEntity;
+
 public class UserRest {
 	private String userId;
 	private String firstName;
 	private String lastName;
 	private String email;
+	private ContactEntity contact;
+
+	public ContactEntity getContact() {
+		return contact;
+	}
+
+	public void setContact(ContactEntity contact) {
+		this.contact = contact;
+	}
 
 	public String getUserId() {
 		return this.userId;

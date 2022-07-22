@@ -6,7 +6,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.StreamingHttpOutputMessage.Body;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,6 +65,7 @@ public class UserController {
 
 			Response response = new Response();
 			response.setData(user);
+			response.setStatus(HttpStatus.OK);
 			response.setMessage("success");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 

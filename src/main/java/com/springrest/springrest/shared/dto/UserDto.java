@@ -2,6 +2,8 @@ package com.springrest.springrest.shared.dto;
 
 import java.io.Serializable;
 
+import com.springrest.springrest.io.entity.ContactEntity;
+
 public class UserDto implements Serializable {
 	/**
 	 * 
@@ -16,6 +18,15 @@ public class UserDto implements Serializable {
 	private String encryptedPassword;
 	private String emailVerifiactionToken;
 	private Boolean emailVerificationStatus = false;
+	private ContactEntity contact;
+
+	public ContactEntity getContact() {
+		return contact;
+	}
+
+	public void setContact(ContactEntity contact) {
+		this.contact = contact;
+	}
 
 	public long getId() {
 		return id;

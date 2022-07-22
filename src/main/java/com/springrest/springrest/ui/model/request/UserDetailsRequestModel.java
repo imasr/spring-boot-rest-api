@@ -1,11 +1,23 @@
 package com.springrest.springrest.ui.model.request;
 
+import com.springrest.springrest.io.entity.ContactEntity;
+
 public class UserDetailsRequestModel {
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String password;
 	private String userId;
+
+	private ContactEntity contact;
+
+	public ContactEntity getContact() {
+		return contact;
+	}
+
+	public void setContact(ContactEntity contact) {
+		this.contact = contact;
+	}
 
 	public String getUserId() {
 		return userId;
