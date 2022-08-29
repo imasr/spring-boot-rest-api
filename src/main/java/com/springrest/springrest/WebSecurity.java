@@ -23,7 +23,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/", "/users", "/users/{id}").permitAll()
-				.antMatchers(HttpMethod.POST, "/users", "/users/bulk").permitAll()
+				.antMatchers(HttpMethod.POST, "/users", "/users/bulk", "/upload-file").permitAll()
 				.antMatchers(HttpMethod.PUT, "/users/{id}").permitAll()
 				.antMatchers(HttpMethod.DELETE, "/users/{id}").permitAll()
 				.anyRequest().authenticated();

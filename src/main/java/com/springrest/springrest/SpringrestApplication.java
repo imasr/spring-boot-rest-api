@@ -16,5 +16,4 @@ public class SpringrestApplication {
 	public BCryptPasswordEncoder bcryptPassword() {
 		return new BCryptPasswordEncoder();
 	}
-
 }

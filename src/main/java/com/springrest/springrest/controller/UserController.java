@@ -41,16 +41,12 @@ public class UserController {
 				System.out.println(item);
 				userList.add(returnValue);
 			});
-			Response response = new Response();
-			response.setData(userList);
-			response.setMessage("success");
+			Response response = new Response(userList, HttpStatus.OK, "success");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Response response = new Response();
-			response.setMessage(e.getMessage());
-			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			Response response = new Response(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
@@ -63,17 +59,12 @@ public class UserController {
 			UserRest user = new UserRest();
 			BeanUtils.copyProperties(userDto, user);
 
-			Response response = new Response();
-			response.setData(user);
-			response.setStatus(HttpStatus.OK);
-			response.setMessage("success");
+			Response response = new Response(user, HttpStatus.OK, "success");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Response response = new Response();
-			response.setMessage(e.getMessage());
-			response.setStatus(HttpStatus.NOT_FOUND);
+			Response response = new Response(null, HttpStatus.NOT_FOUND, e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 	}
@@ -88,16 +79,14 @@ public class UserController {
 			UserRest returnValue = new UserRest();
 			BeanUtils.copyProperties(createdUserDetails, returnValue);
 
-			Response response = new Response();
-			response.setData(returnValue);
-			response.setMessage("success");
+			Response response = new Response(returnValue, HttpStatus.CREATED, "success");
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			Response response = new Response();
-			response.setMessage(e.getMessage());
-			response.setStatus(HttpStatus.CONFLICT);
+			Response response = new Response(null, HttpStatus.CONFLICT, e.getMessage());
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+
 		}
 	}
 
@@ -118,15 +107,11 @@ public class UserController {
 				returnValue.add(items);
 			});
 
-			Response response = new Response();
-			response.setData(returnValue);
-			response.setMessage("success");
+			Response response = new Response(returnValue, HttpStatus.CREATED, "success");
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Response response = new Response();
-			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-			response.setMessage(e.getMessage());
+			Response response = new Response(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
@@ -144,17 +129,13 @@ public class UserController {
 			UserRest returnValue = new UserRest();
 			BeanUtils.copyProperties(updatedUser, returnValue);
 
-			Response response = new Response();
-			response.setStatus(HttpStatus.OK);
-			response.setMessage("User data updated Successfully");
-			response.setData(userDetails);
+			Response response = new Response(userDetails, HttpStatus.OK,
+					userId + " " + "User data updated Successfully");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Response response = new Response();
-			response.setStatus(HttpStatus.NOT_FOUND);
-			response.setMessage(e.getMessage());
+			Response response = new Response(null, HttpStatus.NOT_FOUND, e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 	}
@@ -164,17 +145,13 @@ public class UserController {
 		try {
 
 			userService.deleteUser(userId);
+			Response response = new Response(null, HttpStatus.OK, userId + " " + "User deleted Successfully");
 
-			Response response = new Response();
-			response.setStatus(HttpStatus.OK);
-			response.setMessage(userId + " " + "User deleted Successfully");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Response response = new Response();
-			response.setStatus(HttpStatus.NOT_FOUND);
-			response.setMessage(e.getMessage());
+			Response response = new Response(null, HttpStatus.NOT_FOUND, e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 
 		}

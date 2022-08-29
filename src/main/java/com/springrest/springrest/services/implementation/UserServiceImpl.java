@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import com.springrest.springrest.crud.UserRepository;
 import com.springrest.springrest.io.entity.UserEntity;
 import com.springrest.springrest.services.UserService;
-import com.springrest.springrest.shared.Utils;
 import com.springrest.springrest.shared.dto.UserDto;
+import com.springrest.springrest.shared.helper.Utils;
 
 @Service
 public class UserServiceImpl implements UserService {
