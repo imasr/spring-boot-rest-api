@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.springrest.springrest.crud.UserRepository;
 import com.springrest.springrest.io.entity.UserEntity;
+import com.springrest.springrest.repositories.UserRepository;
 import com.springrest.springrest.services.UserService;
 import com.springrest.springrest.shared.dto.UserDto;
 import com.springrest.springrest.shared.helper.Utils;

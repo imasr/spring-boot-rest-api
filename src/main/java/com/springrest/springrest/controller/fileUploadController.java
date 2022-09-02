@@ -12,7 +12,7 @@ import com.springrest.springrest.shared.helper.Utils;
 import com.springrest.springrest.ui.model.response.Response;
 
 @RestController
-public class fileUploadController {
+public class FileUploadController {
 
     @Autowired
     public Utils utils;
