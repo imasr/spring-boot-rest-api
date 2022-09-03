@@ -1,16 +1,16 @@
-package com.springrest.springrest.security;
+// package com.springrest.springrest.security;
 
 // import org.springframework.security.authentication.AuthenticationManager;
-// import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+// import
+// org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-public class AuthenticationFilter
-// extends UsernamePasswordAuthenticationFilter
-{
+// public class AuthenticationFilter extends
+// UsernamePasswordAuthenticationFilter{
 
-    // private final AuthenticationManager authenticationManager;
+// private final AuthenticationManager authenticationManager;
 
-    // public AuthenticationFilter(AuthenticationManager authenticationManager) {
-    // this.authenticationManager = authenticationManager;
-    // }
+// public AuthenticationFilter(AuthenticationManager authenticationManager) {
+// this.authenticationManager = authenticationManager;
+// }
 
-}
+// }
