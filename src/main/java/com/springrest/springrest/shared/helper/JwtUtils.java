@@ -31,7 +31,7 @@ public class JwtUtils {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SecurityConstants.TOKEN_SECRET).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(SecurityConstants.getTokenSecret()).parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -47,7 +47,7 @@ public class JwtUtils {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.JWT_TOKEN_VALIDITY))
-                .signWith(SignatureAlgorithm.HS256, SecurityConstants.TOKEN_SECRET).compact();
+                .signWith(SignatureAlgorithm.HS256, SecurityConstants.getTokenSecret()).compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {

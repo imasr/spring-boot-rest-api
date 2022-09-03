@@ -6,10 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class Home {
+public class HomePage {
 
 	@GetMapping("/")
 	public ResponseEntity<String> welcomeMessage() {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body("Welcome to the Rest API homepage of Java Spring Boot");
+		return ResponseEntity.status(HttpStatus.ACCEPTED)
+				.body("<h1>Rest API Java Spring Boot</h1>");
 	}
 }

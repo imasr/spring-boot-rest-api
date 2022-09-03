@@ -33,7 +33,7 @@ public class AuthController {
 	@Autowired
 	private UserService userService;
 
-	@PostMapping("/login")
+	@PostMapping("/signin")
 	public ResponseEntity<Response> login(@RequestBody UserLoginRequestModel loginResuestData) throws Exception {
 
 		try {

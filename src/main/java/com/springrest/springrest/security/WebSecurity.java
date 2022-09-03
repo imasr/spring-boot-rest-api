@@ -25,15 +25,20 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	@Override()
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().cors().disable().authorizeRequests()
-				// .antMatchers(HttpMethod.GET, "/", SecurityConstants.SIGN_UP_URL +
-				// "/**").permitAll()
-				.antMatchers(HttpMethod.POST, SecurityConstants.SIGN_IN__URL, SecurityConstants.SIGN_UP_URL + "/**",
-						"/upload-file")
+				.antMatchers(HttpMethod.GET, "/").permitAll()
+				.antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL, SecurityConstants.SIGN_IN__URL)
 				.permitAll()
-				.antMatchers(HttpMethod.PUT, SecurityConstants.SIGN_UP_URL + "/**").permitAll()
-				.antMatchers(HttpMethod.DELETE, SecurityConstants.SIGN_UP_URL + "/**").permitAll()
 				.anyRequest().authenticated()
-				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.and().addFilter(getAuthenticationFilter())
+				.addFilter(new AuthorizationFilter(authenticationManager()))
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	}
+
+	protected AuthenticationFilter getAuthenticationFilter() throws Exception {
+		final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+		filter.setFilterProcessesUrl("/login");
+		return filter;
 	}
 
 	@Override()
