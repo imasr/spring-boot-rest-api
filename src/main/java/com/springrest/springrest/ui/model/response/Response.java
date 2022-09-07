@@ -1,7 +1,5 @@
 package com.springrest.springrest.ui.model.response;
 
-import org.springframework.http.HttpStatus;
-
 public class Response {
 
 	private Object data;

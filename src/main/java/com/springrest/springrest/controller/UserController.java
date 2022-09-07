@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springrest.springrest.exceptions.UserServiceException;
 import com.springrest.springrest.services.UserService;
 import com.springrest.springrest.shared.dto.UserDto;
 import com.springrest.springrest.ui.model.request.UserDetailsRequestModel;
@@ -75,7 +76,7 @@ public class UserController {
 		try {
 			if (userDetails.getFirstName().isEmpty() || userDetails.getLastName().isEmpty()
 					|| userDetails.getEmail().isEmpty() || userDetails.getPassword().isEmpty()) {
-				throw new Exception(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+				throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 			}
 
 			UserDto userDto = new UserDto();
