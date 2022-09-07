@@ -17,6 +17,7 @@ import com.springrest.springrest.repositories.UserRepository;
 import com.springrest.springrest.services.UserService;
 import com.springrest.springrest.shared.dto.UserDto;
 import com.springrest.springrest.shared.helper.Utils;
+import com.springrest.springrest.ui.model.response.ErrorMessages;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
 	public UserDto createUser(UserDto user) {
 
 		if (userRepository.findByEmail(user.getEmail()) != null)
-			throw new UsernameNotFoundException("User already Exist");
+			throw new UsernameNotFoundException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessage());
 
 		UserEntity userEntity = new UserEntity();
 		BeanUtils.copyProperties(user, userEntity);

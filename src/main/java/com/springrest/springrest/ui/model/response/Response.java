@@ -5,10 +5,10 @@ import org.springframework.http.HttpStatus;
 public class Response {
 
 	private Object data;
-	private HttpStatus status;
+	private int status;
 	private String message;
 
-	public Response(Object data, HttpStatus status, String message) {
+	public Response(Object data, int status, String message) {
 		this.data = data;
 		this.status = status;
 		this.message = message;
@@ -22,11 +22,11 @@ public class Response {
 		this.data = data;
 	}
 
-	public HttpStatus getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(HttpStatus status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 
