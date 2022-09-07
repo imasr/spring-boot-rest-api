@@ -16,7 +16,7 @@ public class Utils {
 
 	}
 
-	public final String UPLOAD_DIR = "C:\\Users\\002SML744\\Desktop\\spring-boot-rest-api\\src\\main\\resources\\static\\image";
+	public final String UPLOAD_DIR = "C:\\Users\\002SML744\\Desktop\\Project\\spring-boot-rest-api\\src\\main\\resources\\static\\image";
 
 	public boolean uploadFile(MultipartFile file) {
 		boolean fileuploaded = false;

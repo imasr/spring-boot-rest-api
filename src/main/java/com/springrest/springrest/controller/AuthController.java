@@ -1,19 +1,16 @@
 package com.springrest.springrest.controller;
 
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springrest.springrest.io.entity.UserEntity;
 import com.springrest.springrest.security.SecurityConstants;
 import com.springrest.springrest.services.UserService;
 import com.springrest.springrest.shared.dto.UserDto;
@@ -43,7 +40,7 @@ public class AuthController {
 
 		} catch (UsernameNotFoundException e) {
 			e.printStackTrace();
-			Response response = new Response(null, HttpStatus.BAD_REQUEST, "Bad Credentials");
+			Response response = new Response(null, HttpStatus.BAD_REQUEST.value(), "Bad Credentials");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 
@@ -51,7 +48,7 @@ public class AuthController {
 		UserRest user = new UserRest();
 		BeanUtils.copyProperties(userDto, user);
 		String token = this.jwtUtils.generateToken(user);
-		Response res = new Response(user, HttpStatus.OK, "Login Successful");
+		Response res = new Response(user, HttpStatus.OK.value(), "Login Successful");
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token).body(res);

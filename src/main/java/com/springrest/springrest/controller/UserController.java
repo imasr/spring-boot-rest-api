@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springrest.springrest.services.UserService;
 import com.springrest.springrest.shared.dto.UserDto;
 import com.springrest.springrest.ui.model.request.UserDetailsRequestModel;
+import com.springrest.springrest.ui.model.response.ErrorMessages;
 import com.springrest.springrest.ui.model.response.Response;
 import com.springrest.springrest.ui.model.response.UserRest;
 
@@ -41,12 +42,12 @@ public class UserController {
 				System.out.println(item);
 				userList.add(returnValue);
 			});
-			Response response = new Response(userList, HttpStatus.OK, "success");
+			Response response = new Response(userList, HttpStatus.OK.value(), "success");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Response response = new Response(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+			Response response = new Response(null, HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
@@ -59,12 +60,12 @@ public class UserController {
 			UserRest user = new UserRest();
 			BeanUtils.copyProperties(userDto, user);
 
-			Response response = new Response(user, HttpStatus.OK, "success");
+			Response response = new Response(user, HttpStatus.OK.value(), "success");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Response response = new Response(null, HttpStatus.NOT_FOUND, e.getMessage());
+			Response response = new Response(null, HttpStatus.NOT_FOUND.value(), e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 	}
@@ -72,6 +73,11 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<Response> createUser(@RequestBody UserDetailsRequestModel userDetails) {
 		try {
+			if (userDetails.getFirstName().isEmpty() || userDetails.getLastName().isEmpty()
+					|| userDetails.getEmail().isEmpty() || userDetails.getPassword().isEmpty()) {
+				throw new Exception(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+			}
+
 			UserDto userDto = new UserDto();
 
 			BeanUtils.copyProperties(userDetails, userDto);
@@ -79,13 +85,13 @@ public class UserController {
 			UserRest returnValue = new UserRest();
 			BeanUtils.copyProperties(createdUserDetails, returnValue);
 
-			Response response = new Response(returnValue, HttpStatus.CREATED, "success");
+			Response response = new Response(returnValue, HttpStatus.CREATED.value(), "success");
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Response response = new Response(null, HttpStatus.CONFLICT, e.getMessage());
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+			Response response = new Response(null, HttpStatus.BAD_REQUEST.value(), e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 
 		}
 	}
@@ -107,11 +113,11 @@ public class UserController {
 				returnValue.add(items);
 			});
 
-			Response response = new Response(returnValue, HttpStatus.CREATED, "success");
+			Response response = new Response(returnValue, HttpStatus.CREATED.value(), "success");
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Response response = new Response(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+			Response response = new Response(null, HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
@@ -129,13 +135,13 @@ public class UserController {
 			UserRest returnValue = new UserRest();
 			BeanUtils.copyProperties(updatedUser, returnValue);
 
-			Response response = new Response(userDetails, HttpStatus.OK,
+			Response response = new Response(userDetails, HttpStatus.OK.value(),
 					userId + " " + "User data updated Successfully");
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Response response = new Response(null, HttpStatus.NOT_FOUND, e.getMessage());
+			Response response = new Response(null, HttpStatus.NOT_FOUND.value(), e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 	}
@@ -145,13 +151,13 @@ public class UserController {
 		try {
 
 			userService.deleteUser(userId);
-			Response response = new Response(null, HttpStatus.OK, userId + " " + "User deleted Successfully");
+			Response response = new Response(null, HttpStatus.OK.value(), userId + " " + "User deleted Successfully");
 
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Response response = new Response(null, HttpStatus.NOT_FOUND, e.getMessage());
+			Response response = new Response(null, HttpStatus.NOT_FOUND.value(), e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 
 		}

@@ -21,7 +21,7 @@ public class FileUploadController {
     public ResponseEntity<Response> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
             if (file.isEmpty()) {
-                Response response = new Response(null, HttpStatus.BAD_REQUEST, "Request must contain file");
+                Response response = new Response(null, HttpStatus.BAD_REQUEST.value(), "Request must contain file");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
             // type checking
@@ -34,18 +34,18 @@ public class FileUploadController {
 
             boolean f = utils.uploadFile(file);
             if (f) {
-                Response response = new Response(null, HttpStatus.OK,
+                Response response = new Response(null, HttpStatus.OK.value(),
                         file.getOriginalFilename() + " File uploaded successfully");
                 return ResponseEntity.status(HttpStatus.OK).body(response);
             }
 
-            Response response = new Response(null, HttpStatus.INTERNAL_SERVER_ERROR,
+            Response response = new Response(null, HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     " Something went wrong. Please Try Again!");
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         } catch (Exception e) {
             e.printStackTrace();
-            Response response = new Response(null, HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            Response response = new Response(null, HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
 
