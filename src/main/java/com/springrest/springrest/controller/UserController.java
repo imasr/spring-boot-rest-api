@@ -22,6 +22,7 @@ import com.springrest.springrest.shared.dto.UserDto;
 import com.springrest.springrest.ui.model.request.UserDetailsRequestModel;
 import com.springrest.springrest.ui.model.response.ErrorMessages;
 import com.springrest.springrest.ui.model.response.Response;
+import com.springrest.springrest.ui.model.response.SuccessMessages;
 import com.springrest.springrest.ui.model.response.UserRest;
 
 @RestController
@@ -43,7 +44,8 @@ public class UserController {
 				System.out.println(item);
 				userList.add(returnValue);
 			});
-			Response response = new Response(userList, HttpStatus.OK.value(), "success");
+			Response response = new Response(userList, HttpStatus.OK.value(),
+					SuccessMessages.RECORD_FETCHED.getSuccessMessage());
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
@@ -61,7 +63,8 @@ public class UserController {
 			UserRest user = new UserRest();
 			BeanUtils.copyProperties(userDto, user);
 
-			Response response = new Response(user, HttpStatus.OK.value(), "success");
+			Response response = new Response(user, HttpStatus.OK.value(),
+					SuccessMessages.RECORD_FETCHED.getSuccessMessage());
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
@@ -86,7 +89,8 @@ public class UserController {
 			UserRest returnValue = new UserRest();
 			BeanUtils.copyProperties(createdUserDetails, returnValue);
 
-			Response response = new Response(returnValue, HttpStatus.CREATED.value(), "success");
+			Response response = new Response(returnValue, HttpStatus.CREATED.value(),
+					SuccessMessages.RECORD_CREATED.getSuccessMessage());
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
 		} catch (Exception e) {
@@ -114,7 +118,8 @@ public class UserController {
 				returnValue.add(items);
 			});
 
-			Response response = new Response(returnValue, HttpStatus.CREATED.value(), "success");
+			Response response = new Response(returnValue, HttpStatus.CREATED.value(),
+					SuccessMessages.RECORD_CREATED.getSuccessMessage());
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -137,7 +142,7 @@ public class UserController {
 			BeanUtils.copyProperties(updatedUser, returnValue);
 
 			Response response = new Response(userDetails, HttpStatus.OK.value(),
-					userId + " " + "User data updated Successfully");
+					userId + " " + SuccessMessages.RECORD_UPDATED.getSuccessMessage());
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
@@ -152,7 +157,8 @@ public class UserController {
 		try {
 
 			userService.deleteUser(userId);
-			Response response = new Response(null, HttpStatus.OK.value(), userId + " " + "User deleted Successfully");
+			Response response = new Response(null, HttpStatus.OK.value(),
+					userId + " " + SuccessMessages.RECORD_DELETED.getSuccessMessage());
 
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 

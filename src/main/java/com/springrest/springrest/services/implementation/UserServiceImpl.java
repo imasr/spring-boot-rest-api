@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 	public UserDto updateUser(UserDto userObject, String userId) {
 		UserEntity userEntity = userRepository.findByUserId(userId);
 		if (userEntity == null)
-			throw new UsernameNotFoundException("User does not Exist");
+			throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 
 		userEntity.setFirstName(userObject.getFirstName());
 		userEntity.setLastName(userObject.getLastName());
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
 	public void deleteUser(String userId) {
 		UserEntity userEntity = userRepository.findByUserId(userId);
 		if (userEntity == null)
-			throw new UsernameNotFoundException("User does not Exist");
+			throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 
 		userRepository.delete(userEntity);
 	};
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
 	public UserDto getUserById(String userId) throws UsernameNotFoundException {
 		UserEntity userEntity = userRepository.findByUserId(userId);
 		if (userEntity == null)
-			throw new UsernameNotFoundException("User does not Exist");
+			throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 
 		UserDto returnValue = new UserDto();
 		BeanUtils.copyProperties(userEntity, returnValue);
@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
 	public UserDto getUserByEmail(String email) throws UsernameNotFoundException {
 		UserEntity userEntity = userRepository.findByEmail(email);
 		if (userEntity == null)
-			throw new UsernameNotFoundException("User does not Exist");
+			throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 
 		UserDto returnValue = new UserDto();
 		BeanUtils.copyProperties(userEntity, returnValue);
@@ -147,7 +147,7 @@ public class UserServiceImpl implements UserService {
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		UserEntity userEntity = userRepository.findByEmail(email);
 		if (userEntity == null) {
-			throw new UsernameNotFoundException(email + " Username doesn't exist");
+			throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 		}
 
 		return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
