@@ -1,17 +1,27 @@
 package com.springrest.springrest.ui.model.response;
 
-import org.springframework.http.HttpStatus;
+import java.util.Date;
 
 public class Response {
 
 	private Object data;
 	private int status;
 	private String message;
+	private Date timestamp;
 
 	public Response(Object data, int status, String message) {
+		this.timestamp = new Date();
 		this.data = data;
 		this.status = status;
 		this.message = message;
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	public Object getData() {

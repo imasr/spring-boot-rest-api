@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,13 +15,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springrest.springrest.exceptions.UserServiceException;
 import com.springrest.springrest.services.UserService;
+import com.springrest.springrest.shared.dto.PageDto;
 import com.springrest.springrest.shared.dto.UserDto;
 import com.springrest.springrest.ui.model.request.UserDetailsRequestModel;
 import com.springrest.springrest.ui.model.response.ErrorMessages;
+import com.springrest.springrest.ui.model.response.PageUsersRest;
 import com.springrest.springrest.ui.model.response.Response;
+import com.springrest.springrest.ui.model.response.SuccessMessages;
 import com.springrest.springrest.ui.model.response.UserRest;
 
 @RestController
@@ -31,18 +37,27 @@ public class UserController {
 	UserService userService;
 
 	@GetMapping
-	public ResponseEntity<Response> getAllUser() {
+	public ResponseEntity<Response> getAllUser(@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "size", defaultValue = "5") int size,
+			@RequestParam(value = "sortby", defaultValue = "firstName") String sortby,
+			@RequestParam(value = "sortOrder", defaultValue = "ASC") Sort.Direction sortOrder) {
 		try {
-			List<UserDto> allUsers = userService.getAllUsers();
+			System.out.println(page);
+			System.out.println(size);
+			PageDto pageUserDto = userService.getAllUsers(page, size, sortby, sortOrder);
 			List<UserRest> userList = new ArrayList<UserRest>();
+			PageUsersRest userRest = new PageUsersRest();
 
-			allUsers.forEach(item -> {
+			BeanUtils.copyProperties(pageUserDto, userRest);
+
+			for (UserDto user : pageUserDto.getContent()) {
 				UserRest returnValue = new UserRest();
-				BeanUtils.copyProperties(item, returnValue);
-				System.out.println(item);
+				BeanUtils.copyProperties(user, returnValue);
 				userList.add(returnValue);
-			});
-			Response response = new Response(userList, HttpStatus.OK.value(), "success");
+			}
+			userRest.setContent(userList);
+			Response response = new Response(userRest, HttpStatus.OK.value(),
+					SuccessMessages.RECORD_FETCHED.getSuccessMessage());
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
@@ -60,7 +75,8 @@ public class UserController {
 			UserRest user = new UserRest();
 			BeanUtils.copyProperties(userDto, user);
 
-			Response response = new Response(user, HttpStatus.OK.value(), "success");
+			Response response = new Response(user, HttpStatus.OK.value(),
+					SuccessMessages.RECORD_FETCHED.getSuccessMessage());
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
@@ -75,7 +91,7 @@ public class UserController {
 		try {
 			if (userDetails.getFirstName().isEmpty() || userDetails.getLastName().isEmpty()
 					|| userDetails.getEmail().isEmpty() || userDetails.getPassword().isEmpty()) {
-				throw new Exception(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+				throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 			}
 
 			UserDto userDto = new UserDto();
@@ -85,7 +101,8 @@ public class UserController {
 			UserRest returnValue = new UserRest();
 			BeanUtils.copyProperties(createdUserDetails, returnValue);
 
-			Response response = new Response(returnValue, HttpStatus.CREATED.value(), "success");
+			Response response = new Response(returnValue, HttpStatus.CREATED.value(),
+					SuccessMessages.RECORD_CREATED.getSuccessMessage());
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
 		} catch (Exception e) {
@@ -113,7 +130,8 @@ public class UserController {
 				returnValue.add(items);
 			});
 
-			Response response = new Response(returnValue, HttpStatus.CREATED.value(), "success");
+			Response response = new Response(returnValue, HttpStatus.CREATED.value(),
+					SuccessMessages.RECORD_CREATED.getSuccessMessage());
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,7 +154,7 @@ public class UserController {
 			BeanUtils.copyProperties(updatedUser, returnValue);
 
 			Response response = new Response(userDetails, HttpStatus.OK.value(),
-					userId + " " + "User data updated Successfully");
+					userId + " " + SuccessMessages.RECORD_UPDATED.getSuccessMessage());
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
 		} catch (Exception e) {
@@ -151,7 +169,8 @@ public class UserController {
 		try {
 
 			userService.deleteUser(userId);
-			Response response = new Response(null, HttpStatus.OK.value(), userId + " " + "User deleted Successfully");
+			Response response = new Response(null, HttpStatus.OK.value(),
+					userId + " " + SuccessMessages.RECORD_DELETED.getSuccessMessage());
 
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
