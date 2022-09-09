@@ -25,7 +25,7 @@ import com.springrest.springrest.shared.dto.UserDto;
 import com.springrest.springrest.shared.helper.Utils;
 import com.springrest.springrest.ui.model.response.ErrorMessages;
 
-@Service("userService")
+@Service()
 public class UserServiceImpl implements UserService {
 
 	@Autowired
