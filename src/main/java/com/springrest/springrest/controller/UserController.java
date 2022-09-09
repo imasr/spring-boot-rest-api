@@ -42,8 +42,6 @@ public class UserController {
 			@RequestParam(value = "sortby", defaultValue = "firstName") String sortby,
 			@RequestParam(value = "sortOrder", defaultValue = "ASC") Sort.Direction sortOrder) {
 		try {
-			System.out.println(page);
-			System.out.println(size);
 			PageDto pageUserDto = userService.getAllUsers(page, size, sortby, sortOrder);
 			List<UserRest> userList = new ArrayList<UserRest>();
 			PageUsersRest userRest = new PageUsersRest();
