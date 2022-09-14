@@ -2,6 +2,8 @@ package com.springrest.springrest.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -44,13 +46,16 @@ public class UserController {
 		try {
 			PageDto pageUserDto = userService.getAllUsers(page, size, sortby, sortOrder);
 			List<UserRest> userList = new ArrayList<UserRest>();
-			PageUsersRest userRest = new PageUsersRest();
-
-			BeanUtils.copyProperties(pageUserDto, userRest);
+			// PageUsersRest userRest = new PageUsersRest();
+			// BeanUtils.copyProperties(pageUserDto, userRest);
+			ModelMapper modelMapper = new ModelMapper();
+			PageUsersRest userRest = modelMapper.map(pageUserDto, PageUsersRest.class);
 
 			for (UserDto user : pageUserDto.getContent()) {
-				UserRest returnValue = new UserRest();
-				BeanUtils.copyProperties(user, returnValue);
+				// UserRest returnValue = new UserRest();
+				// BeanUtils.copyProperties(user, returnValue);
+				// ModelMapper modelMapper = new ModelMapper();
+				UserRest returnValue = modelMapper.map(user, UserRest.class);
 				userList.add(returnValue);
 			}
 			userRest.setContent(userList);
@@ -70,8 +75,11 @@ public class UserController {
 		try {
 			UserDto userDto = userService.getUserById(userId);
 
-			UserRest user = new UserRest();
-			BeanUtils.copyProperties(userDto, user);
+			// UserRest user = new UserRest();
+			// BeanUtils.copyProperties(userDto, user);
+
+			ModelMapper modelMapper = new ModelMapper();
+			UserRest user = modelMapper.map(userDto, UserRest.class);
 
 			Response response = new Response(user, HttpStatus.OK.value(),
 					SuccessMessages.RECORD_FETCHED.getSuccessMessage());
@@ -92,12 +100,13 @@ public class UserController {
 				throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 			}
 
-			UserDto userDto = new UserDto();
+			ModelMapper modelMapper = new ModelMapper();
+			UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
-			BeanUtils.copyProperties(userDetails, userDto);
 			UserDto createdUserDetails = userService.createUser(userDto);
-			UserRest returnValue = new UserRest();
-			BeanUtils.copyProperties(createdUserDetails, returnValue);
+
+			// UserRest returnValue = new UserRest();
+			UserRest returnValue = modelMapper.map(createdUserDetails, UserRest.class);
 
 			Response response = new Response(returnValue, HttpStatus.CREATED.value(),
 					SuccessMessages.RECORD_CREATED.getSuccessMessage());
@@ -115,16 +124,20 @@ public class UserController {
 	public ResponseEntity<Response> createBulkUser(@RequestBody Iterable<UserDetailsRequestModel> userList) {
 		try {
 			List<UserDto> userDtoList = new ArrayList<UserDto>();
+			ModelMapper modelMapper = new ModelMapper();
+
 			userList.forEach(user -> {
 				UserDto userDto = new UserDto();
-				BeanUtils.copyProperties(user, userDto);
+				// BeanUtils.copyProperties(user, userDto);
+				userDto = modelMapper.map(user, UserDto.class);
 				userDtoList.add(userDto);
 			});
 			List<UserDto> storedUsers = userService.createUserInBulk(userDtoList);
 			List<UserRest> returnValue = new ArrayList<UserRest>();
 			storedUsers.forEach(storedUser -> {
 				UserRest items = new UserRest();
-				BeanUtils.copyProperties(storedUser, items);
+				// BeanUtils.copyProperties(storedUser, items);
+				items = modelMapper.map(storedUser, UserRest.class);
 				returnValue.add(items);
 			});
 
@@ -144,14 +157,17 @@ public class UserController {
 		try {
 
 			UserDto userDto = new UserDto();
+			// userDto = modelMapper.map(userDetails, UserDto.class);
 			BeanUtils.copyProperties(userDetails, userDto);
 
 			UserDto updatedUser = userService.updateUser(userDto, userId);
 
-			UserRest returnValue = new UserRest();
-			BeanUtils.copyProperties(updatedUser, returnValue);
+			// UserRest returnValue = new UserRest();
+			// BeanUtils.copyProperties(updatedUser, returnValue);
+			ModelMapper modelMapper = new ModelMapper();
+			UserRest returnValue = modelMapper.map(updatedUser, UserRest.class);
 
-			Response response = new Response(userDetails, HttpStatus.OK.value(),
+			Response response = new Response(returnValue, HttpStatus.OK.value(),
 					userId + " " + SuccessMessages.RECORD_UPDATED.getSuccessMessage());
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 

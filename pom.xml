@@ -12,7 +12,7 @@
 	<groupId>com.springrest</groupId>
 	<artifactId>springrest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-		<packaging>war</packaging>
+	<packaging>war</packaging>
 
 	<name>springrest</name>
 	<description>Demo project for Spring Boot</description>
@@ -46,6 +46,17 @@
 			<version>0.9.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
