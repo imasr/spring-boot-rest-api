@@ -2,7 +2,7 @@ package com.springrest.springrest.shared.dto;
 
 import java.io.Serializable;
 
-import com.springrest.springrest.io.entity.ContactEntity;
+import com.springrest.springrest.io.entity.AddressEntity;
 
 public class UserDto implements Serializable {
 	/**
@@ -18,14 +18,14 @@ public class UserDto implements Serializable {
 	private String encryptedPassword;
 	private String emailVerifiactionToken;
 	private Boolean emailVerificationStatus = false;
-	private ContactEntity contact;
+	private AddressEntity address;
 
-	public ContactEntity getContact() {
-		return contact;
+	public AddressEntity getAddress() {
+		return address;
 	}
 
-	public void setContact(ContactEntity contact) {
-		this.contact = contact;
+	public void setAddress(AddressEntity address) {
+		this.address = address;
 	}
 
 	public long getId() {

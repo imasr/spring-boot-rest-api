@@ -48,14 +48,14 @@ public class UserEntity implements Serializable {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private ContactEntity contact;
+	private AddressEntity address;
 
-	public ContactEntity getContact() {
-		return contact;
+	public AddressEntity getAddress() {
+		return address;
 	}
 
-	public void setContact(ContactEntity contact) {
-		this.contact = contact;
+	public void setAddress(AddressEntity address) {
+		this.address = address;
 	}
 
 	public long getId() {

@@ -1,6 +1,6 @@
 package com.springrest.springrest.ui.model.request;
 
-import com.springrest.springrest.io.entity.ContactEntity;
+import com.springrest.springrest.io.entity.AddressEntity;
 
 public class UserDetailsRequestModel {
 	private String firstName;
@@ -9,14 +9,14 @@ public class UserDetailsRequestModel {
 	private String password;
 	private String userId;
 
-	private ContactEntity contact;
+	private AddressEntity address;
 
-	public ContactEntity getContact() {
-		return contact;
+	public AddressEntity getAddress() {
+		return address;
 	}
 
-	public void setContact(ContactEntity contact) {
-		this.contact = contact;
+	public void setContact(AddressEntity address) {
+		this.address = address;
 	}
 
 	public String getUserId() {

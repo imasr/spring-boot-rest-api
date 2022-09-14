@@ -11,8 +11,8 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "contacts")
-public class ContactEntity {
+@Table(name = "address")
+public class AddressEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,12 +34,12 @@ public class ContactEntity {
     private String pin = "";
 
     @Column(nullable = true, length = 10)
-    private String mobile = "";
+    private String phone = "";
 
     @Column(nullable = true, length = 3)
     private String countryCode = "";
 
-    @OneToOne(mappedBy = "contact")
+    @OneToOne(mappedBy = "address")
     @JsonBackReference
     private UserEntity user;
 
@@ -51,12 +51,12 @@ public class ContactEntity {
         this.countryCode = countryCode;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public UserEntity getUser() {
