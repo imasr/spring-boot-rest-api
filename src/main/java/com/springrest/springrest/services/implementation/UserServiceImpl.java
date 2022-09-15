@@ -18,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.springrest.springrest.exceptions.UserServiceException;
-import com.springrest.springrest.io.entity.AddressEntity;
 import com.springrest.springrest.io.entity.UserEntity;
 import com.springrest.springrest.repositories.UserRepository;
 import com.springrest.springrest.services.UserService;
