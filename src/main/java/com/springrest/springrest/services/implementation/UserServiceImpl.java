@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.springrest.springrest.exceptions.UserServiceException;
+import com.springrest.springrest.io.entity.AddressEntity;
 import com.springrest.springrest.io.entity.UserEntity;
 import com.springrest.springrest.repositories.UserRepository;
 import com.springrest.springrest.services.UserService;
@@ -139,14 +140,11 @@ public class UserServiceImpl implements UserService {
 		userEntity.setFirstName(userObject.getFirstName());
 		userEntity.setLastName(userObject.getLastName());
 		userEntity.setEmail(userObject.getEmail());
-		// userEntity.setAddress(userObject.getAddress());
 
 		UserEntity savedUser = userRepository.save(userEntity);
 
-		UserDto returnValue = new UserDto();
-		BeanUtils.copyProperties(savedUser, returnValue);
-
-		return returnValue;
+		ModelMapper modelMapper2 = new ModelMapper();
+		return modelMapper2.map(savedUser, UserDto.class);
 	}
 
 	@Override

@@ -171,17 +171,11 @@ public class UserController {
 		try {
 
 			UserDto userDto = new UserDto();
-			// userDto = modelMapper.map(userDetails, UserDto.class);
 			BeanUtils.copyProperties(userDetails, userDto);
 
-			UserDto updatedUser = userService.updateUser(userDto, userId);
+			userService.updateUser(userDto, userId);
 
-			// UserRest returnValue = new UserRest();
-			// BeanUtils.copyProperties(updatedUser, returnValue);
-			ModelMapper modelMapper = new ModelMapper();
-			UserRest returnValue = modelMapper.map(updatedUser, UserRest.class);
-
-			Response response = new Response(returnValue, HttpStatus.OK.value(),
+			Response response = new Response(null, HttpStatus.OK.value(),
 					userId + " " + SuccessMessages.RECORD_UPDATED.getSuccessMessage());
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 

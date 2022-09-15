@@ -3,12 +3,8 @@ package com.springrest.springrest.shared.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.springrest.springrest.io.entity.AddressEntity;
-
 public class UserDto implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 19479591646686306L;
 	private long id;
 	private String userId;
