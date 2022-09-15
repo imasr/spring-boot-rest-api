@@ -5,7 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -18,30 +19,37 @@ public class AddressEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(nullable = true)
-    private String country = "";
+    @Column(nullable = false)
+    private String addressId;
+
+    @Column(nullable = false)
+    private String type;
 
     @Column(nullable = true)
-    private String state = "";
+    private String country;
 
     @Column(nullable = true)
-    private String city = "";
+    private String state;
 
     @Column(nullable = true)
-    private String area = "";
+    private String city;
+
+    @Column(nullable = true)
+    private String area;
 
     @Column(nullable = true, length = 6)
-    private String pin = "";
+    private String pin;
 
     @Column(nullable = true, length = 10)
-    private String phone = "";
+    private String phone;
 
     @Column(nullable = true, length = 3)
-    private String countryCode = "";
+    private String countryCode;
 
-    @OneToOne(mappedBy = "address")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     @JsonBackReference
-    private UserEntity user;
+    private UserEntity userDetails;
 
     public String getCountryCode() {
         return countryCode;
@@ -49,6 +57,22 @@ public class AddressEntity {
 
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
     }
 
     public String getPhone() {
@@ -59,12 +83,12 @@ public class AddressEntity {
         this.phone = phone;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public UserEntity getUserDetails() {
+        return userDetails;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setUserDetails(UserEntity userDetails) {
+        this.userDetails = userDetails;
     }
 
     public int getId() {

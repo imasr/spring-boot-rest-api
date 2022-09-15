@@ -1,6 +1,7 @@
 package com.springrest.springrest.io.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -46,15 +47,15 @@ public class UserEntity implements Serializable {
 	@Column(nullable = false)
 	private Boolean emailVerified = false;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "userDetails", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private AddressEntity address;
+	private List<AddressEntity> address;
 
-	public AddressEntity getAddress() {
+	public List<AddressEntity> getAddress() {
 		return address;
 	}
 
-	public void setAddress(AddressEntity address) {
+	public void setAddress(List<AddressEntity> address) {
 		this.address = address;
 	}
 

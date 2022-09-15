@@ -1,19 +1,19 @@
 package com.springrest.springrest.ui.model.response;
 
-import com.springrest.springrest.io.entity.AddressEntity;
+import java.util.List;
 
 public class UserRest {
 	private String userId;
 	private String firstName;
 	private String lastName;
 	private String email;
-	private AddressEntity address;
+	private List<AddressRest> address;
 
-	public AddressEntity getAddress() {
+	public List<AddressRest> getAddress() {
 		return address;
 	}
 
-	public void setAddress(AddressEntity address) {
+	public void setAddress(List<AddressRest> address) {
 		this.address = address;
 	}
 

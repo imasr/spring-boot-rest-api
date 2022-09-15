@@ -1,6 +1,7 @@
 package com.springrest.springrest.shared.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.springrest.springrest.io.entity.AddressEntity;
 
@@ -18,13 +19,13 @@ public class UserDto implements Serializable {
 	private String encryptedPassword;
 	private String emailVerifiactionToken;
 	private Boolean emailVerificationStatus = false;
-	private AddressEntity address;
+	private List<AddressDto> address;
 
-	public AddressEntity getAddress() {
+	public List<AddressDto> getAddress() {
 		return address;
 	}
 
-	public void setAddress(AddressEntity address) {
+	public void setAddress(List<AddressDto> address) {
 		this.address = address;
 	}
 

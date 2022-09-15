@@ -46,18 +46,15 @@ public class UserController {
 		try {
 			PageDto pageUserDto = userService.getAllUsers(page, size, sortby, sortOrder);
 			List<UserRest> userList = new ArrayList<UserRest>();
-			// PageUsersRest userRest = new PageUsersRest();
-			// BeanUtils.copyProperties(pageUserDto, userRest);
+
 			ModelMapper modelMapper = new ModelMapper();
 			PageUsersRest userRest = modelMapper.map(pageUserDto, PageUsersRest.class);
 
 			for (UserDto user : pageUserDto.getContent()) {
-				// UserRest returnValue = new UserRest();
-				// BeanUtils.copyProperties(user, returnValue);
-				// ModelMapper modelMapper = new ModelMapper();
 				UserRest returnValue = modelMapper.map(user, UserRest.class);
 				userList.add(returnValue);
 			}
+
 			userRest.setContent(userList);
 			Response response = new Response(userRest, HttpStatus.OK.value(),
 					SuccessMessages.RECORD_FETCHED.getSuccessMessage());
@@ -75,9 +72,6 @@ public class UserController {
 		try {
 			UserDto userDto = userService.getUserById(userId);
 
-			// UserRest user = new UserRest();
-			// BeanUtils.copyProperties(userDto, user);
-
 			ModelMapper modelMapper = new ModelMapper();
 			UserRest user = modelMapper.map(userDto, UserRest.class);
 
@@ -92,6 +86,27 @@ public class UserController {
 		}
 	}
 
+	// @GetMapping("/{userId}/address")
+	// public ResponseEntity<Response> getAddressByUserId(@PathVariable("userId")
+	// String userId) {
+	// try {
+	// UserDto userDto = userService.getUserById(userId);
+
+	// ModelMapper modelMapper = new ModelMapper();
+	// UserRest user = modelMapper.map(userDto, UserRest.class);
+
+	// Response response = new Response(user, HttpStatus.OK.value(),
+	// SuccessMessages.RECORD_FETCHED.getSuccessMessage());
+	// return ResponseEntity.status(HttpStatus.OK).body(response);
+
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// Response response = new Response(null, HttpStatus.NOT_FOUND.value(),
+	// e.getMessage());
+	// return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	// }
+	// }
+
 	@PostMapping
 	public ResponseEntity<Response> createUser(@RequestBody UserDetailsRequestModel userDetails) {
 		try {
@@ -105,7 +120,6 @@ public class UserController {
 
 			UserDto createdUserDetails = userService.createUser(userDto);
 
-			// UserRest returnValue = new UserRest();
 			UserRest returnValue = modelMapper.map(createdUserDetails, UserRest.class);
 
 			Response response = new Response(returnValue, HttpStatus.CREATED.value(),
@@ -124,22 +138,22 @@ public class UserController {
 	public ResponseEntity<Response> createBulkUser(@RequestBody Iterable<UserDetailsRequestModel> userList) {
 		try {
 			List<UserDto> userDtoList = new ArrayList<UserDto>();
-			ModelMapper modelMapper = new ModelMapper();
 
-			userList.forEach(user -> {
-				UserDto userDto = new UserDto();
-				// BeanUtils.copyProperties(user, userDto);
-				userDto = modelMapper.map(user, UserDto.class);
+			for (UserDetailsRequestModel user : userList) {
+				ModelMapper modelMapper = new ModelMapper();
+				UserDto userDto = modelMapper.map(user, UserDto.class);
 				userDtoList.add(userDto);
-			});
+			}
+
 			List<UserDto> storedUsers = userService.createUserInBulk(userDtoList);
+
 			List<UserRest> returnValue = new ArrayList<UserRest>();
-			storedUsers.forEach(storedUser -> {
-				UserRest items = new UserRest();
-				// BeanUtils.copyProperties(storedUser, items);
-				items = modelMapper.map(storedUser, UserRest.class);
+
+			for (UserDto storedUser : storedUsers) {
+				ModelMapper modelMapper = new ModelMapper();
+				UserRest items = modelMapper.map(storedUser, UserRest.class);
 				returnValue.add(items);
-			});
+			}
 
 			Response response = new Response(returnValue, HttpStatus.CREATED.value(),
 					SuccessMessages.RECORD_CREATED.getSuccessMessage());
