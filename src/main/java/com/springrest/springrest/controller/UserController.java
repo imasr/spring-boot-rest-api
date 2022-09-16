@@ -86,27 +86,6 @@ public class UserController {
 		}
 	}
 
-	// @GetMapping("/{userId}/address")
-	// public ResponseEntity<Response> getAddressByUserId(@PathVariable("userId")
-	// String userId) {
-	// try {
-	// UserDto userDto = userService.getUserById(userId);
-
-	// ModelMapper modelMapper = new ModelMapper();
-	// UserRest user = modelMapper.map(userDto, UserRest.class);
-
-	// Response response = new Response(user, HttpStatus.OK.value(),
-	// SuccessMessages.RECORD_FETCHED.getSuccessMessage());
-	// return ResponseEntity.status(HttpStatus.OK).body(response);
-
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// Response response = new Response(null, HttpStatus.NOT_FOUND.value(),
-	// e.getMessage());
-	// return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-	// }
-	// }
-
 	@PostMapping
 	public ResponseEntity<Response> createUser(@RequestBody UserDetailsRequestModel userDetails) {
 		try {
