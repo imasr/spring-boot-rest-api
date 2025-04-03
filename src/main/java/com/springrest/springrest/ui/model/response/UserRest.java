@@ -1,20 +1,20 @@
 package com.springrest.springrest.ui.model.response;
 
-import com.springrest.springrest.io.entity.ContactEntity;
+import java.util.List;
 
 public class UserRest {
 	private String userId;
 	private String firstName;
 	private String lastName;
 	private String email;
-	private ContactEntity contact;
+	private List<AddressRest> address;
 
-	public ContactEntity getContact() {
-		return contact;
+	public List<AddressRest> getAddress() {
+		return address;
 	}
 
-	public void setContact(ContactEntity contact) {
-		this.contact = contact;
+	public void setAddress(List<AddressRest> address) {
+		this.address = address;
 	}
 
 	public String getUserId() {
