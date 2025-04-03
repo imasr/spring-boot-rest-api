@@ -9,7 +9,7 @@ import com.springrest.springrest.io.entity.AddressEntity;
 import com.springrest.springrest.io.entity.UserEntity;
 
 @Repository
-public interface AddressRepository extends CrudRepository<AddressEntity, Long> {
+public interface AddressRepository extends CrudRepository<AddressEntity, Integer> {
 
     List<AddressEntity> findAllByUserDetails(UserEntity userEntity);
 
